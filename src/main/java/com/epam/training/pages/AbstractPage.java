@@ -38,11 +38,6 @@ public abstract class AbstractPage {
     return actions.waitForAllVisible(locator);
   }
 
-  protected WebElement waitForClickable(By locator) {
-    LOGGER.debug("Waiting for element clickable: {}", locator);
-    return actions.waitForClickable(locator);
-  }
-
   protected WebElement waitForFirstVisible(By locator) {
     LOGGER.debug("Waiting for first visible element among matches: {}", locator);
     return actions.waitForFirstVisible(locator);
