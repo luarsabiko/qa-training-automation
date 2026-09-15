@@ -17,30 +17,30 @@ public final class DriverManager {
 
   public void initDriver(BrowserType browserType) {
     if (driver.get() == null) {
-      WebDriver webDriver = BrowserFactoryProvider
+      WebDriver rawDriver = BrowserFactoryProvider
           .getFactory(browserType)
           .createDriver();
 
-      driver.set(webDriver);
+      driver.set(new LoggingWebDriver(rawDriver));
     }
   }
 
   public WebDriver getDriver() {
-    WebDriver webDriver = driver.get();
+    WebDriver currentDriver = driver.get();
 
-    if (webDriver == null) {
+    if (currentDriver == null) {
       throw new IllegalStateException("WebDriver has not been initialized");
     }
 
-    return webDriver;
+    return currentDriver;
   }
 
   public void quitDriver() {
-    WebDriver webDriver = driver.get();
+    WebDriver currentDriver = driver.get();
 
-    if (webDriver != null) {
+    if (currentDriver != null) {
       try {
-        webDriver.quit();
+        currentDriver.quit();
       } finally {
         driver.remove();
       }

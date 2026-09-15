@@ -1,12 +1,12 @@
 package com.epam.training.pages;
 
 import com.epam.training.framework.config.ConfigReader;
+import com.epam.training.framework.utils.WebElementActions;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -17,66 +17,54 @@ public abstract class AbstractPage {
   protected static final Logger LOGGER = LogManager.getLogger(AbstractPage.class);
   protected final WebDriver driver;
   protected final WebDriverWait wait;
+  private final WebElementActions actions;
 
   protected AbstractPage(WebDriver driver) {
     this.driver = driver;
     this.wait = new WebDriverWait(driver,
         Duration.ofSeconds(ConfigReader.getInstance().getExplicitWaitTimeout()));
+    this.actions = new WebElementActions(driver);
   }
+
+  public abstract boolean isPageLoaded();
 
   protected WebElement waitForVisibility(By locator) {
     LOGGER.debug("Waiting for visibility: {}", locator);
-    return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    return actions.waitForVisibility(locator);
   }
 
   protected List<WebElement> waitForAllVisible(By locator) {
     LOGGER.debug("Waiting for all elements visibility: {}", locator);
-    return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
+    return actions.waitForAllVisible(locator);
   }
 
   protected WebElement waitForClickable(By locator) {
     LOGGER.debug("Waiting for element clickable: {}", locator);
-    return wait.until(ExpectedConditions.elementToBeClickable(locator));
+    return actions.waitForClickable(locator);
   }
 
   protected WebElement waitForFirstVisible(By locator) {
     LOGGER.debug("Waiting for first visible element among matches: {}", locator);
-    return wait.until(driver -> {
-      List<WebElement> elements = driver.findElements(locator);
-      for (WebElement element : elements) {
-        if (element.isDisplayed()) {
-          return element;
-        }
-      }
-      return null;
-    });
+    return actions.waitForFirstVisible(locator);
   }
 
   protected void click(By locator) {
     LOGGER.info("Clicking element: {}", locator);
-    waitForClickable(locator).click();
+    actions.click(locator);
   }
 
   protected void clickFirstVisible(By locator) {
     LOGGER.info("Clicking first visible element among matches: {}", locator);
-    WebElement element = waitForFirstVisible(locator);
-    wait.until(ExpectedConditions.elementToBeClickable(element));
-    element.click();
+    actions.clickFirstVisible(locator);
   }
 
   protected void type(By locator, String text) {
     LOGGER.info("Typing '{}' into: {}", text, locator);
-    WebElement element = waitForVisibility(locator);
-    element.clear();
-    element.sendKeys(text);
+    actions.type(locator, text);
   }
 
   protected void typeSecret(By locator, String text) {
     LOGGER.info("Typing '******' into: {}", locator);
-    WebElement element = waitForVisibility(locator);
-    element.clear();
-    element.sendKeys(text);
+    actions.typeSecret(locator, text);
   }
-
-  public abstract boolean isPageLoaded();
 }

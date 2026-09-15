@@ -15,7 +15,7 @@
     <webdrivermanager.version>5.9.1</webdrivermanager.version>
     <log4j.version>2.23.1</log4j.version>
 
-    <suiteXmlFile>src/test/resources/suites/smoke.xml</suiteXmlFile>
+    <suiteXmlFile>smoke.xml</suiteXmlFile>
     <browser>chrome</browser>
     <env>qa</env>
   </properties>
@@ -79,7 +79,9 @@
         <version>3.2.5</version>
         <configuration>
           <suiteXmlFiles>
-            <suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
+            <suiteXmlFile>
+              ${project.basedir}/src/test/resources/suites/${suiteXmlFile}
+            </suiteXmlFile>
           </suiteXmlFiles>
           <systemPropertyVariables>
             <browser>${browser}</browser>
