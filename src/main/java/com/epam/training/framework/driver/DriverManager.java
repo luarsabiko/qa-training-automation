@@ -1,15 +1,12 @@
 package com.epam.training.framework.driver;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
 public final class DriverManager {
 
-  private static final Logger LOGGER = LogManager.getLogger(DriverManager.class);
   private static final DriverManager INSTANCE = new DriverManager();
 
-  private WebDriver driver;
+  private final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
   private DriverManager() {
   }
@@ -19,24 +16,34 @@ public final class DriverManager {
   }
 
   public void initDriver(BrowserType browserType) {
-    if (driver == null) {
-      LOGGER.info("Initializing WebDriver");
-      driver = DriverFactory.createDriver(browserType);
+    if (driver.get() == null) {
+      WebDriver webDriver = BrowserFactoryProvider
+          .getFactory(browserType)
+          .createDriver();
+
+      driver.set(webDriver);
     }
   }
 
   public WebDriver getDriver() {
-    if (driver == null) {
-      throw new IllegalStateException("Driver not initialized. Call initDriver() first.");
+    WebDriver webDriver = driver.get();
+
+    if (webDriver == null) {
+      throw new IllegalStateException("WebDriver has not been initialized");
     }
-    return driver;
+
+    return webDriver;
   }
 
   public void quitDriver() {
-    if (driver != null) {
-      LOGGER.info("Quitting WebDriver");
-      driver.quit();
-      driver = null;
+    WebDriver webDriver = driver.get();
+
+    if (webDriver != null) {
+      try {
+        webDriver.quit();
+      } finally {
+        driver.remove();
+      }
     }
   }
 }
