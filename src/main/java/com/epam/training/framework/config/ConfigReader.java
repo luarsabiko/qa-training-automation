@@ -61,4 +61,13 @@ public final class ConfigReader {
   public String getTestUserPassword() {
     return System.getProperty("test.user.password", get("test.user.password"));
   }
+
+  public String getTestUser2Email() {
+    return System.getProperty("test.user2.email", get("test.user2.email"));
+  }
+
+  public String getTestUser2Password() {
+    return System.getProperty("test.user2.password", get("test.user2.password"));
+  }
+
 }

@@ -14,11 +14,25 @@
     <testng.version>7.10.2</testng.version>
     <webdrivermanager.version>5.9.1</webdrivermanager.version>
     <log4j.version>2.23.1</log4j.version>
+    <reportportal.version>5.6.8</reportportal.version>
+
 
     <suiteXmlFile>smoke.xml</suiteXmlFile>
     <browser>chrome</browser>
     <env>qa</env>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.cucumber</groupId>
+        <artifactId>cucumber-bom</artifactId>
+        <version>7.34.3</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>
@@ -33,11 +47,43 @@
       <version>${testng.version}</version>
     </dependency>
 
+    <!-- Cucumber dependencies -->
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-testng</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.epam.reportportal</groupId>
+      <artifactId>agent-java-cucumber6</artifactId>
+      <version>5.5.3</version>
+      <scope>test</scope>
+    </dependency>
+
     <!-- Handles automatic driver binary downloads -->
     <dependency>
       <groupId>io.github.bonigarcia</groupId>
       <artifactId>webdrivermanager</artifactId>
       <version>${webdrivermanager.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.epam.reportportal</groupId>
+      <artifactId>agent-java-testng</artifactId>
+      <version>${reportportal.version}</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>2.0.16</version>
     </dependency>
 
     <dependency>

@@ -2,14 +2,13 @@
 <suite name="Regression Suite" verbose="1">
   <listeners>
     <listener class-name="com.epam.training.framework.listeners.TestListener"/>
+    <listener class-name="com.epam.reportportal.testng.ReportPortalTestNGListener"/>
   </listeners>
 
   <test name="Regression Tests">
     <parameter name="browser" value="chrome"/>
-    <classes>
-      <class name="com.epam.training.tests.LoginTest"/>
-      <class name="com.epam.training.tests.ProgramsSkillSearchTest"/>
-      <class name="com.epam.training.tests.SkillToProgramsNavigationTest"/>
-    </classes>
+    <packages>
+      <package name="com.epam.training.tests.*"/>
+    </packages>
   </test>
 </suite>

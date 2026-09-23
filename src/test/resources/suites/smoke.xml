@@ -2,6 +2,7 @@
 <suite name="Smoke Suite" verbose="1">
   <listeners>
     <listener class-name="com.epam.training.framework.listeners.TestListener"/>
+    <listener class-name="com.epam.reportportal.testng.ReportPortalTestNGListener"/>
   </listeners>
 
   <test name="Smoke Tests">
